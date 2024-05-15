@@ -163,3 +163,61 @@ ENGINE = INNODB,
 AVG_ROW_LENGTH = 5461,
 CHARACTER SET utf8mb3,
 COLLATE utf8mb3_general_ci;
+10.
+CREATE TABLE dbferfurm.orderproduct (
+  OrderProductId CHAR(36) NOT NULL,
+  UserId CHAR(36) NOT NULL,
+  OrderDate DATETIME DEFAULT NULL,
+  DeliveryDate DATETIME DEFAULT NULL,
+  Status INT(11) DEFAULT NULL,
+  OrderAddress VARCHAR(100) DEFAULT NULL,
+  Phone VARCHAR(20) DEFAULT NULL,
+  Receiver VARCHAR(50) DEFAULT NULL,
+  Payment INT(11) DEFAULT NULL,
+  StatusPayment INT(11) DEFAULT NULL,
+  PRIMARY KEY (OrderProductId)
+)
+ENGINE = INNODB,
+AVG_ROW_LENGTH = 564,
+CHARACTER SET utf8mb3,
+COLLATE utf8mb3_general_ci,
+COMMENT = 'Đơn hàng';
+
+ALTER TABLE dbferfurm.orderproduct 
+  ADD CONSTRAINT FK_order_UserId FOREIGN KEY (UserId)
+    REFERENCES dbferfurm.user(UserId) ON DELETE NO ACTION;
+11 
+CREATE TABLE dbferfurm.voucher (
+  VoucherId CHAR(36) NOT NULL,
+  StartDateVouCher DATETIME NOT NULL,
+  EndDateVoucher DATETIME NOT NULL,
+  PercentVoucher DECIMAL(5, 2) DEFAULT NULL,
+  MaxximumUse INT(11) DEFAULT NULL,
+  StartPrice DECIMAL(19, 2) DEFAULT NULL,
+  EndPrice DECIMAL(19, 2) DEFAULT NULL,
+  DecriptionUse VARCHAR(255) DEFAULT NULL,
+  VoucherCode VARCHAR(10) DEFAULT NULL,
+  DiscountMoney DECIMAL(19, 2) DEFAULT NULL,
+  CreateDate DATETIME DEFAULT NULL,
+  PRIMARY KEY (VoucherId)
+)
+ENGINE = INNODB,
+CHARACTER SET utf8mb3,
+COLLATE utf8mb3_general_ci;
+CREATE TABLE dbferfurm.uservoucher (
+  UserVoucherId CHAR(36) NOT NULL,
+  UserId CHAR(36) DEFAULT NULL,
+  VoucherId CHAR(36) DEFAULT NULL,
+  PRIMARY KEY (UserVoucherId)
+)
+ENGINE = INNODB,
+CHARACTER SET utf8mb3,
+COLLATE utf8mb3_general_ci;
+
+ALTER TABLE dbferfurm.uservoucher 
+  ADD CONSTRAINT FK_uservoucher_UserId FOREIGN KEY (UserId)
+    REFERENCES dbferfurm.user(UserId) ON DELETE NO ACTION;
+
+ALTER TABLE dbferfurm.uservoucher 
+  ADD CONSTRAINT FK_uservoucher_VoucherId FOREIGN KEY (VoucherId)
+    REFERENCES dbferfurm.voucher(VoucherId) ON DELETE NO ACTION;
